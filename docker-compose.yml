@@ -1,4 +1,4 @@
-version: "1.0"
+version: "1.1"
 
 services:
   influxdb:
@@ -22,7 +22,7 @@ services:
       - ./volumes/influxdb/data:/var/lib/influxdb
       - ./backups/influxdb/db:/var/lib/influxdb/backup
     networks:
-      # - iotstack_nw
+      - iotstack_net
     logging:
       options:
         max-size: "5m"
@@ -51,7 +51,7 @@ services:
       - ./volumes/grafana/data:/var/lib/grafana
       - ./volumes/grafana/log:/var/log/grafana
     networks:
-      # - iotstack_nw
+      - iotstack_net
     logging:
       options:
         max-size: "5m"
@@ -71,7 +71,7 @@ services:
       - ./services/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
       - ./services/mosquitto/filter.acl:/mosquitto/config/filter.acl
     networks:
-      # - iotstack_nw
+      - iotstack_net
     logging:
       options:
         max-size: "5m"
@@ -96,8 +96,11 @@ services:
       - "/dev/vcio:/dev/vcio"
       - "/dev/gpiomem:/dev/gpiomem"
     networks:
-      # - iotstack_nw
+      - iotstack_net
     logging:
       options:
         max-size: "5m"
         max-file: "3"
+    
+networks:
+  iotstack_net:
