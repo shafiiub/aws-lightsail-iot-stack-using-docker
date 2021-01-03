@@ -1,4 +1,4 @@
-version: "3.3"
+version: "1.0"
 
 services:
   db:
@@ -23,5 +23,103 @@ services:
 networks:
   todo_net:
 
-volumes:
-  dbdata:
+  influxdb:
+    container_name: influxdb
+    image: "influxdb:latest"
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+      - "8083:8083"
+      - "2003:2003"
+    environment:
+      - INFLUXDB_HTTP_FLUX_ENABLED=false
+      - INFLUXDB_REPORTING_DISABLED=false
+      - INFLUXDB_HTTP_AUTH_ENABLED=false
+      - INFLUX_USERNAME=dba
+      - INFLUX_PASSWORD=supremo
+      - INFLUXDB_UDP_ENABLED=false
+      - INFLUXDB_UDP_BIND_ADDRESS=0.0.0.0:8086
+      - INFLUXDB_UDP_DATABASE=udp
+    volumes:
+      - ./volumes/influxdb/data:/var/lib/influxdb
+      - ./backups/influxdb/db:/var/lib/influxdb/backup
+    networks:
+      - iotstack_nw
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "3"
+        
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    restart: unless-stopped
+    user: "0"
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_PATHS_DATA=/var/lib/grafana
+      - GF_PATHS_LOGS=/var/log/grafana
+      # - TZ=Etc/UTC
+      ## [SERVER]
+      # - GF_SERVER_ROOT_URL=http://localhost:3000/grafana
+      # - GF_SERVER_SERVE_FROM_SUB_PATH=true
+      ## [SECURITY]
+      # - GF_SECURITY_ADMIN_USER=admin
+      # - GF_SECURITY_ADMIN_PASSWORD=admin
+      # - GF_SECURITY_ALLOW_EMBEDDING=true # Allows embedding externally
+      # - GF_AUTH_ANONYMOUS_ENABLED=true # Allows public read access to graphs
+    volumes:
+      - ./volumes/grafana/data:/var/lib/grafana
+      - ./volumes/grafana/log:/var/log/grafana
+    networks:
+      - iotstack_nw
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto
+    restart: unless-stopped
+    user: "1883"
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./volumes/mosquitto/data:/mosquitto/data
+      - ./volumes/mosquitto/log:/mosquitto/log
+      - ./volumes/mosquitto/pwfile:/mosquitto/pwfile
+      - ./services/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./services/mosquitto/filter.acl:/mosquitto/config/filter.acl
+    networks:
+      - iotstack_nw
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "3"
+
+  nodered:
+    container_name: nodered
+    build: ./services/nodered/.
+    restart: unless-stopped
+    user: "0"
+    privileged: true
+    environment:
+      - TZ=Etc/UTC
+    ports:
+      - "1880:1880"
+    volumes:
+      - ./volumes/nodered/data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
+    devices:
+      - "/dev/ttyAMA0:/dev/ttyAMA0"
+      - "/dev/vcio:/dev/vcio"
+      - "/dev/gpiomem:/dev/gpiomem"
+    networks:
+      - iotstack_nw
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "3"
