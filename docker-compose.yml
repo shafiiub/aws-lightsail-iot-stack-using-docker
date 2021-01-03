@@ -1,28 +1,6 @@
 version: "1.0"
 
 services:
-  db:
-    image: mongo:latest
-    networks:
-      - todo_net
-    volumes:
-      - type: volume
-        source: dbdata
-        target: /data/db
-
-  front_end:
-    image: mikegcoleman/todo:latest
-    ports:
-      - "80:3000"
-    networks:
-      - todo_net
-    environment: 
-      - DB_URL=mongodb://db:27017
-      - DEBUG=app:*
-    
-networks:
-  todo_net:
-
   influxdb:
     container_name: influxdb
     image: "influxdb:latest"
@@ -44,7 +22,7 @@ networks:
       - ./volumes/influxdb/data:/var/lib/influxdb
       - ./backups/influxdb/db:/var/lib/influxdb/backup
     networks:
-      - iotstack_nw
+      # - iotstack_nw
     logging:
       options:
         max-size: "5m"
@@ -73,7 +51,7 @@ networks:
       - ./volumes/grafana/data:/var/lib/grafana
       - ./volumes/grafana/log:/var/log/grafana
     networks:
-      - iotstack_nw
+      # - iotstack_nw
     logging:
       options:
         max-size: "5m"
@@ -93,7 +71,7 @@ networks:
       - ./services/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
       - ./services/mosquitto/filter.acl:/mosquitto/config/filter.acl
     networks:
-      - iotstack_nw
+      # - iotstack_nw
     logging:
       options:
         max-size: "5m"
@@ -118,7 +96,7 @@ networks:
       - "/dev/vcio:/dev/vcio"
       - "/dev/gpiomem:/dev/gpiomem"
     networks:
-      - iotstack_nw
+      # - iotstack_nw
     logging:
       options:
         max-size: "5m"
