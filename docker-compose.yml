@@ -79,7 +79,7 @@ services:
 
   nodered:
     container_name: nodered
-    build: ./services/nodered/.
+    build: nodered/node-red
     restart: unless-stopped
     user: "0"
     privileged: true
