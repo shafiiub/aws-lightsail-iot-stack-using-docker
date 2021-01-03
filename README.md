@@ -37,6 +37,13 @@ user      admin
 ----      -----
 iot-stack true
 
+> CREATE DATABASE airquality
+> SHOW DATABASES
+name: databases
+name
+----
+_internal
+airquality
 
 ```
 
