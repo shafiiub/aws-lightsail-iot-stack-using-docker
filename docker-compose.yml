@@ -7,6 +7,7 @@ services:
     restart: unless-stopped
     ports:
       - "8086:8086"
+      - "8088:8088"
       - "8083:8083"
       - "2003:2003"
     environment:
@@ -21,13 +22,25 @@ services:
     volumes:
       - ./volumes/influxdb/data:/var/lib/influxdb
       - ./backups/influxdb/db:/var/lib/influxdb/backup
+      - ./volumes/influxdb/config:/etc/influxdb
     networks:
       - iotstack_net
     logging:
       options:
         max-size: "5m"
         max-file: "3"
-        
+
+  chronograf:
+    image: chronograf:latest
+    volumes:
+      # Mount for chronograf database
+      - ./volumes/chronograf/data/:/var/lib/chronograf/
+    ports:
+      # The WebUI for Chronograf is served on port 8888
+      - "8888:8888"
+    depends_on:
+      - influxdb
+
   grafana:
     container_name: grafana
     image: grafana/grafana
