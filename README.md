@@ -10,6 +10,13 @@ chmod +x ./lightsail-compose.sh
 
 ./lightsail-compose.sh
 ```
+
+Open Ports 
+```
+networking >ipv4 add ports
+
+```
+
 ## Important links
 - (light sail todo example) [https://github.com/mikegcoleman/todo]
 - (setup IOT Stack on raspberry pi)[https://github.com/SensorsIot/IOTstack]
