@@ -10,6 +10,9 @@ sudo usermod -aG docker ubuntu
 curl -L https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 
+# Docker network
+docker network create --driver bridge iot-stack-net
+
 # copy the dockerfile into /srv/docker 
 # if you change this, change the systemd service file to match
 # WorkingDirectory=[whatever you have below]
