@@ -17,6 +17,31 @@ networking >ipv4 add ports
 
 ```
 
+## Setup influxDB
+go to the command line and the the follwoing
+```
+$ docker ps -a
+$ docker ps
+$ cd /srv/docker
+$ docker-compose exec influxdb /bin/bash
+root@a76c12fadfad:/# influx 
+Connected to http://localhost:8086 version 1.8.3
+InfluxDB shell version: 1.8.3
+> show users
+user admin
+---- -----
+> create user "iot-stack" with password 'xxxxxxxxx' with all privileges
+> ;
+> show users
+user      admin
+----      -----
+iot-stack true
+
+
+```
+
+
+
 ## Important links
 - (light sail todo example) [https://github.com/mikegcoleman/todo]
 - (setup IOT Stack on raspberry pi)[https://github.com/SensorsIot/IOTstack]
