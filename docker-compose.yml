@@ -8,8 +8,6 @@ services:
     ports:
       - "8086:8086"
       - "8088:8088"
-      - "8083:8083"
-      - "2003:2003"
     environment:
       - INFLUXDB_HTTP_FLUX_ENABLED=false
       - INFLUXDB_REPORTING_DISABLED=false
@@ -21,8 +19,8 @@ services:
       - INFLUXDB_UDP_DATABASE=udp
     volumes:
       - ./volumes/influxdb/data:/var/lib/influxdb
-      - ./backups/influxdb/db:/var/lib/influxdb/backup
       - ./volumes/influxdb/config:/etc/influxdb
+      - ./backups/influxdb/db:/var/lib/influxdb/backup
     networks:
       - iotstack_net
     logging:
@@ -100,43 +98,6 @@ services:
       - iotstack_net
     volumes:
       - ./volumes/nodered/data:/data
-
-  portainer-ce:
-    container_name: portainer-ce
-    image: portainer/portainer-ce
-    restart: unless-stopped
-    ports:
-      - "8000:8000"
-      - "9000:9000"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./volumes/portainer-ce/data:/data
-
-  portainer:
-    container_name: portainer
-    image: portainer/portainer
-    restart: unless-stopped
-    ports:
-      - "9002:9000"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./volumes/portainer/data:/data
-    networks:
-      - iotstack_net
-    logging:
-      options:
-        max-size: "5m"
-        max-file: "3"
-
-  portainer_agent:
-    image: portainer/agent
-    container_name: portainer-agent
-    ports:
-      - 9001:9001
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /var/lib/docker/volumes:/var/lib/docker/volumes
-    restart: unless-stopped
 
 networks:
   iotstack_net:
