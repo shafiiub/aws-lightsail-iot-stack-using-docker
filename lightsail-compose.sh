@@ -11,7 +11,7 @@ curl -L https://github.com/docker/compose/releases/download/1.27.4/docker-compos
 chmod +x /usr/local/bin/docker-compose
 
 # Docker network
-docker network create --driver bridge iot-stack-net
+docker network create --driver bridge iotstack_net
 
 # copy the dockerfile into /srv/docker 
 # if you change this, change the systemd service file to match
