@@ -8,18 +8,22 @@ version: "3.7"
 
 services:
   node-red:
+    container_name: nodered
     image: nodered/node-red:latest
+    restart: unless-stopped
     environment:
       - TZ=UTS
     ports:
       - "1880:1880"
     networks:
-      - node-red-net
+      - iotstack_net
     volumes:
-      - node-red-data:/data
-
-volumes:
-  node-red-data:
-
+      #- node-red-data:/data
+      - ./volumes/nodered/data:/data
+    logging:
+      options:
+        max-size: "5m"
+        max-file: "3"
+        
 networks:
-  node-red-net:
+  iotstack_net:
