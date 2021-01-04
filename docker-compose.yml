@@ -72,7 +72,7 @@ services:
     container_name: mosquitto
     image: eclipse-mosquitto
     restart: unless-stopped
-    user: "1883"
+    user: "0"
     ports:
       - "1883:1883"
     volumes:
