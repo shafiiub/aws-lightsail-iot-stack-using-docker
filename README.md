@@ -47,8 +47,38 @@ airquality
 
 ```
 
+## Some docker commands
+Some Basic commands
+```
+- $ docker ps  list running containers. 
+- $ docker ps -a list all container including stopped container
+- $ docker network create --driver bridge iotstack_net creating network bridge
+- $ docker exec -it influxdb /bin/bash
+  root@f7f7292006d0:/# influx
+
+```
+Docker compose commands
+```
+$ docker-compose up -d same location where docker-compose.yml file exists
+$ docker-compose exec influxdb /bin/bash to access influxDB command inteface
+$ docker-compose logs --tail=5 influxdb  attached log
+```
+Some combinations that help a lot:
+```
+- kill all running containers with docker kill $(docker ps -q)
+- delete all stopped containers with docker rm $(docker ps -a -q)
+- delete all images with docker rmi $(docker images -q)
+- update and stop a container that is in a crash-loop with docker update --restart=no && docker stop
+- bash shell into container docker exec -i -t /bin/bash - if bash is not available use /bin/sh
+- bash shell with root if container is running in a different user context docker exec -i -t -u root /bin/bash
+
+```
 
 
 ## Important links
 - (light sail todo example) [https://github.com/mikegcoleman/todo]
 - (setup IOT Stack on raspberry pi)[https://github.com/SensorsIot/IOTstack]
+- (influxDB setup using docker)[https://www.influxdata.com/blog/tips-for-running-the-tick-stack-using-docker/]
+- (influxDB setup using docker)[https://thenewstack.io/how-to-setup-influxdb-telegraf-and-grafana-on-docker-part-1/]
+- (influxDB setup using docker)[https://devconnected.com/how-to-install-influxdb-on-ubuntu-debian-in-2019/]
+- (Docker commands)[https://codenotary.com/blog/extremely-useful-docker-commands/]
