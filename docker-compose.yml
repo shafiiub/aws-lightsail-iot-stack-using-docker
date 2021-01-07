@@ -90,7 +90,7 @@ services:
 
   node-red:
     image: nodered/node-red:latest
-    user: "1000"
+    user: "1000:1000"
     environment:
       - TZ=Australia/Sydney
     ports:
