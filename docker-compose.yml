@@ -94,7 +94,7 @@ services:
     environment:
       - TZ=Australia/Sydney
     ports:
-      - "1880:1880"
+      - "3001:1880"
     networks:
       - iotstack_net
     volumes:
