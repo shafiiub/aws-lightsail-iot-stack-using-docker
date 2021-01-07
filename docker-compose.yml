@@ -91,7 +91,7 @@ services:
   node-red:
     image: nodered/node-red:latest
     environment:
-      - TZ=Etc/UTC
+      - TZ=Australia/Sydney
     ports:
       - "1880:1880"
     networks:
